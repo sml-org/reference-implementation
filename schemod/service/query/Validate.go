@@ -3,6 +3,7 @@ package query
 import (
 	"fmt"
 	"reference-implementation/schemod/service/typesystem"
+	"reflect"
 )
 
 // ValidateAttribute recursively validates an attribute selection
@@ -82,7 +83,15 @@ func ValidateProperty(
 			)
 		}
 
-		//TODO: validate argument value
+		// Validate argument value
+		if !paramTypeID.IsValueAssignable(arg.Value) {
+			return fmt.Errorf(
+				"mismatching types: can't assign value of Go type %s "+
+					"to argument of type %s",
+				reflect.TypeOf(arg.Value).String(),
+				arg.Type.String(),
+			)
+		}
 	}
 
 	// Verify attributes

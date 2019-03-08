@@ -3,6 +3,7 @@ package query_test
 import (
 	"reference-implementation/schemod/service/query"
 	"reference-implementation/schemod/service/typesystem"
+	"reference-implementation/schemod/service/typesystem/anonstruct"
 	"reference-implementation/schemod/service/typesystem/id"
 	"testing"
 
@@ -35,8 +36,10 @@ func TestWrongArgument(t *testing.T) {
 			typesystem.PR__root_rp: query.PropertySelection{
 				Args: query.Args{
 					typesystem.PM__B_bo_o1: query.Argument{
-						Type:  typesystem.AR__ID_A,
-						Value: "asd",
+						Type: typesystem.AR__ID_A,
+						Value: []id.A{
+							typesystem.NewT_ID_A(typesystem.NewID()),
+						},
 					},
 				},
 			},
@@ -54,7 +57,7 @@ func TestPolymorphicParameterWrongType(t *testing.T) {
 				Args: query.Args{
 					typesystem.PM__root_rp_page: query.Argument{
 						Type:  typesystem.PT__Bool,
-						Value: true,
+						Value: typesystem.NewT_Bool(true),
 					},
 				},
 			},
@@ -67,8 +70,10 @@ func TestPolymorphicParameterWrongType(t *testing.T) {
 // assignable types
 func TestPolymorphicParameter(t *testing.T) {
 	assignableTypes := map[typesystem.IDType]interface{}{
-		typesystem.AS__root_rp_page_struct1: true,
-		typesystem.AR__ID_A:                 true,
+		typesystem.AS__root_rp_page_struct1: anonstruct.A2{},
+		typesystem.AR__ID_A: []id.A{
+			typesystem.NewT_ID_A(typesystem.NewID()),
+		},
 	}
 	for tp, val := range assignableTypes {
 		q := query.Query{
@@ -85,4 +90,22 @@ func TestPolymorphicParameter(t *testing.T) {
 		}
 		require.NoError(t, q.Validate())
 	}
+}
+
+// TestParameterMismatchingType tests providing a mismatching type as
+// an argument value
+func TestParameterMismatchingType(t *testing.T) {
+	q := query.Query{
+		Props: query.Props{
+			typesystem.PR__root_rp: query.PropertySelection{
+				Args: query.Args{
+					typesystem.PM__root_rp_page: query.Argument{
+						Type:  typesystem.AR__ID_A,
+						Value: typesystem.NewT_Bool(true),
+					},
+				},
+			},
+		},
+	}
+	require.Error(t, q.Validate())
 }
