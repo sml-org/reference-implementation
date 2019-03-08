@@ -40,7 +40,7 @@ func TestWrongArgument(t *testing.T) {
 			},
 		},
 	}
-	require.NoError(t, q.Validate())
+	require.Error(t, q.Validate())
 }
 
 func TestWrongArgumentType(t *testing.T) {
@@ -56,21 +56,27 @@ func TestWrongArgumentType(t *testing.T) {
 			},
 		},
 	}
-	require.NoError(t, q.Validate())
+	require.Error(t, q.Validate())
 }
 
-func TestWrongAcceptedUnionType(t *testing.T) {
-	q := query.Query{
-		Props: query.Props{
-			typesystem.PR__root_rp: query.PropertySelection{
-				Args: query.Args{
-					typesystem.PM__root_rp_page: query.Argument{
-						Type:  typesystem.AR__ID_A,
-						Value: true,
+func TestPolymorphicParameter(t *testing.T) {
+	assignableTypes := map[typesystem.IDType]interface{}{
+		typesystem.AS__root_rp_page_struct1: true,
+		typesystem.AR__ID_A:                 true,
+	}
+	for tp, val := range assignableTypes {
+		q := query.Query{
+			Props: query.Props{
+				typesystem.PR__root_rp: query.PropertySelection{
+					Args: query.Args{
+						typesystem.PM__root_rp_page: query.Argument{
+							Type:  tp,
+							Value: val,
+						},
 					},
 				},
 			},
-		},
+		}
+		require.NoError(t, q.Validate())
 	}
-	require.NoError(t, q.Validate())
 }
