@@ -298,3 +298,98 @@ func (i IDType) IsPolymorphic() bool {
 
 	return false
 }
+
+// Assignable returns true if the given type is accepted
+// by the identified polymorphic type
+func (i IDType) Assignable(t IDType) bool {
+	switch i {
+	/**** Traits ****/
+
+	case TR__integer:
+		switch t {
+		case PT__Int32:
+			return true
+		case PT__Int64:
+			return true
+		case PT__Uint32:
+			return true
+		case PT__Uint64:
+			return true
+		}
+
+	/**** Primitives ****/
+	case PTo__Bool:
+		switch t {
+		case PT__Bool:
+			return true
+		case PT__nil:
+			return true
+		}
+	case PTo__Uint32:
+		switch t {
+		case PT__Uint32:
+			return true
+		case PT__nil:
+			return true
+		}
+	case PTo__String:
+		switch t {
+		case PT__String:
+			return true
+		case PT__nil:
+			return true
+		}
+
+	/**** Arrays ****/
+
+	case ARo__C:
+		switch t {
+		case ST__C:
+			return true
+		case PT__nil:
+			return true
+		}
+
+	/**** IDs ****/
+
+	// no polymorphic types
+
+	/**** Structs ****/
+
+	case STo__B:
+		switch t {
+		case ST__B:
+			return true
+		case PT__nil:
+			return true
+		}
+
+	/**** Enums ****/
+
+	// no polymorphic types
+
+	/**** Entities ****/
+
+	// no polymorphic types
+
+	/**** Unions ****/
+
+	// none
+
+	/**** Anonymous Unions ****/
+
+	case AU__root_rp_page:
+		switch t {
+		case AR__ID_A:
+			return true
+		case AS__root_rp_page_struct1:
+			return true
+		}
+
+		/**** Anonymous Structs ****/
+
+		// no polymorphic types
+	}
+
+	return false
+}
