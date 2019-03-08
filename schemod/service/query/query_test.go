@@ -9,6 +9,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// TestQueryValidation tests a successful validation
 func TestQueryValidation(t *testing.T) {
 	q := query.Query{
 		Props: query.Props{
@@ -27,6 +28,7 @@ func TestQueryValidation(t *testing.T) {
 	require.NoError(t, q.Validate())
 }
 
+// TestWrongArgument tests applying an argument on the wrong property
 func TestWrongArgument(t *testing.T) {
 	q := query.Query{
 		Props: query.Props{
@@ -43,7 +45,9 @@ func TestWrongArgument(t *testing.T) {
 	require.Error(t, q.Validate())
 }
 
-func TestWrongArgumentType(t *testing.T) {
+// TestPolymorphicParameterWrongType tests assigning an unassignable type
+// to a parameter of polymorphic type
+func TestPolymorphicParameterWrongType(t *testing.T) {
 	q := query.Query{
 		Props: query.Props{
 			typesystem.PR__root_rp: query.PropertySelection{
@@ -59,6 +63,8 @@ func TestWrongArgumentType(t *testing.T) {
 	require.Error(t, q.Validate())
 }
 
+// TestPolymorphicParameter tests parameters of polymorphic type to accept
+// assignable types
 func TestPolymorphicParameter(t *testing.T) {
 	assignableTypes := map[typesystem.IDType]interface{}{
 		typesystem.AS__root_rp_page_struct1: true,
