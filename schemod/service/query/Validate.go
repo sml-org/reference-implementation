@@ -16,7 +16,7 @@ func ValidateAttribute(
 		// Ensure no selections are made on attributes of non-composite type
 		if len(attrSelection.Props) > 0 {
 			return fmt.Errorf(
-				"selection on non-composite attribute of type %s",
+				"selection on non-composite leaf attribute of type %s",
 				attrTypeID.String(),
 			)
 		}
@@ -70,15 +70,15 @@ func ValidateProperty(
 			)
 		}
 
-		// Ensure the argument type is acceptable
-		argTypeID := argID.Type()
-		if argTypeID != arg.Type {
+		// Ensure the provided argument type is assignable
+		paramTypeID := argID.Type()
+		if !paramTypeID.Assignable(arg.Type) {
 			return fmt.Errorf(
-				"mismatching types: %s can't be used as "+
+				"mismatching types: %s can't be used as a value for "+
 					"argument %s of type %s",
 				arg.Type.String(),
 				argID.String(),
-				argTypeID.String(),
+				paramTypeID.String(),
 			)
 		}
 
@@ -99,7 +99,7 @@ func ValidateProperty(
 			)
 		}
 
-		// Recursively verify the attribute
+		// Recursively verify the attribute selection
 		if err := ValidateAttribute(attrID, attrSelection); err != nil {
 			return err
 		}
@@ -109,7 +109,7 @@ func ValidateProperty(
 		// Ensure no selections are made on properties of non-composite type
 		if len(selection.Props) > 0 {
 			return fmt.Errorf(
-				"selection on non-composite property of type %s",
+				"selection on non-composite leaf property of type %s",
 				propParentTypeID.String(),
 			)
 		}
