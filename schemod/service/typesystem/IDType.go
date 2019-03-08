@@ -9,6 +9,9 @@ const (
 	// PT__Root = service graph root
 	PT__Root
 
+	// PT__nil = nil type
+	PT__nil
+
 	/**************** TYPES ****************/
 
 	/**** Traits ****/
@@ -129,6 +132,12 @@ const (
 // String returns the textual name representation
 func (i IDType) String() string {
 	switch i {
+
+	case PT__Root:
+		return "root"
+	case PT__nil:
+		return "nil"
+
 	/**** Traits ****/
 
 	case TR__integer:
