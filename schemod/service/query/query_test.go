@@ -109,3 +109,13 @@ func TestParameterMismatchingType(t *testing.T) {
 	}
 	require.Error(t, q.Validate())
 }
+
+// TestInexistentProperty tests selecting inexistent property
+func TestInexistentProperty(t *testing.T) {
+	q := query.Query{
+		Props: query.Props{
+			typesystem.PR__A_ab: query.PropertySelection{},
+		},
+	}
+	require.Error(t, q.Validate())
+}
