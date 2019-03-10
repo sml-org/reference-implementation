@@ -47,7 +47,7 @@ func ValidateProperty(
 	selection PropertySelection,
 ) error {
 	// Ensure the property is expected in the given node type
-	propParentTypeID := propID.OwnerType()
+	propParentTypeID := propID.HostType()
 	if propParentTypeID != expectedParentTypeID {
 		return fmt.Errorf(
 			"property %s is a property of type %s and not of type %s",

@@ -1,7 +1,7 @@
 package typesystem
 
-// OwnerType returns the type identifier of the type that owns the property
-func (i IDProperty) OwnerType() IDType {
+// HostType returns the type identifier of the type that owns the property
+func (i IDProperty) HostType() IDType {
 	switch i {
 
 	/**** root ****/
