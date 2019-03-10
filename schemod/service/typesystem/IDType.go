@@ -17,116 +17,122 @@ const (
 	/**** Traits ****/
 
 	// TR__integer = integer
-	// implemented as: T_Integer
+	// implementation: T_Integer
 	TR__integer
 
 	/**** Primitives ****/
 
 	// PT__Version = Version
-	// implemented as: T_Version
+	// implementation: T_Version
 	PT__Version
 
 	// PT__Bool = Bool
-	// implemented as: T_Bool
+	// implementation: T_Bool
 	PT__Bool
 
-	// PTo__Bool = ?Bool
-	// implemented as: *T_Bool
-	PTo__Bool
-
 	// PT__Int32 = Int32
-	// implemented as: T_Int32
+	// implementation: T_Int32
 	PT__Int32
 
 	// PT__Uint32 = ?Uint32
-	// implemented as: T_Uint32
+	// implementation: T_Uint32
 	PT__Uint32
 
-	// PTo__Uint32 = ?Uint32
-	// implemented as: *T_Uint32
-	PTo__Uint32
-
 	// PT__Int64 = Int64
-	// implemented as: T_Int64
+	// implementation: T_Int64
 	PT__Int64
 
 	// PT__Uint64 = Uint64
-	// implemented as: T_Uint64
+	// implementation: T_Uint64
 	PT__Uint64
 
 	// PT__String = String
-	// implemented as: T_String
+	// implementation: T_String
 	PT__String
 
-	// PTo__String = ?String
-	// implemented as: *T_String
-	PTo__String
-
 	// PT__Text = Text
-	// implemented as: T_Text
+	// implementation: T_Text
 	PT__Text
-
-	/**** Arrays ****/
-
-	// AR__ID_A = Array<ID<A>>
-	// implemented as: []T_ID_A
-	AR__ID_A
-
-	// AR__A = Array<A>
-	// implemented as: []T_A
-	AR__A
-
-	// ARo__C = ?Array<C>
-	// implemented as: []T_C (nullable)
-	ARo__C
 
 	/**** IDs ****/
 
 	// ID__A = ID<A>
-	// implemented as: T_ID_A
+	// implementation: T_ID_A
 	ID__A
 
 	/**** Structs ****/
 
 	// ST__C = struct C
-	// implemented as: T_C
+	// implementation: T_C
 	ST__C
 
 	// ST__B = struct B
-	// implemented as: T_B
+	// implementation: T_B
 	ST__B
-
-	// STo__B = ?struct B
-	// implemented as: *T_B
-	STo__B
 
 	/**** Enums ****/
 
 	// NU__E = enum E
-	// implemented as: T_E
+	// implementation: T_E
 	NU__E
 
 	/**** Entities ****/
 
 	// EN__A = entity A
-	// implemented as: T_A
+	// implementation: T_A
 	EN__A
-
-	/**** Unions ****/
-
-	// none
 
 	/**** Anonymous Unions ****/
 
 	// AU__root_rp_page = anonymous union (root.rp.$page)
-	// implemented as: A_1
+	// implementation: A_1
 	AU__root_rp_page
 
 	/**** Anonymous Structs ****/
 
 	// AS__root_rp_page_struct1 = anonymous struct (root.rp.$page):struct1
-	// implemented as: A_2
+	// implementation: A_2
 	AS__root_rp_page_struct1
+
+	/**** Arrays ****/
+
+	// AR__ID_A = Array<ID<A>>
+	// implementation: []T_ID_A
+	AR__ID_A
+
+	// AR__A = Array<A>
+	// implementation: []T_A
+	AR__A
+
+	// AR__C = Array<C>
+	// implementation: []T_C
+	AR__C
+
+	/**** Optional Primitives ****/
+
+	// PTo__Bool = ?Bool
+	// implementation: *T_Bool
+	PTo__Bool
+
+	// PTo__Uint32 = ?Uint32
+	// implementation: *T_Uint32
+	PTo__Uint32
+
+	// PTo__String = ?String
+	// implementation: *T_String
+	PTo__String
+
+	/**** Optional Structs ****/
+
+	// STo__B = ?struct B
+	// implementation: *T_B
+	STo__B
+
+	/**** Optional Arrays ****/
+
+	// ARo__C = ?Array<C>
+	// implementation: []T_C (nullable)
+	ARo__C
 )
 
 // String returns the textual name representation
@@ -148,13 +154,9 @@ func (i IDType) String() string {
 		return "Version"
 	case PT__Bool:
 		return "Bool"
-	case PTo__Bool:
-		return "?Bool"
 	case PT__Int32:
 		return "Int32"
 	case PT__Uint32:
-		return "Uint32"
-	case PTo__Uint32:
 		return "Uint32"
 	case PT__Int64:
 		return "Int64"
@@ -162,19 +164,8 @@ func (i IDType) String() string {
 		return "Uint64"
 	case PT__String:
 		return "String"
-	case PTo__String:
-		return "?String"
 	case PT__Text:
 		return "Text"
-
-	/**** Arrays ****/
-
-	case AR__ID_A:
-		return "Array<ID<A>>"
-	case AR__A:
-		return "Array<A>"
-	case ARo__C:
-		return "?Array<C>"
 
 	/**** IDs ****/
 
@@ -187,8 +178,6 @@ func (i IDType) String() string {
 		return "C"
 	case ST__B:
 		return "B"
-	case STo__B:
-		return "?B"
 
 	/**** Enums ****/
 
@@ -200,10 +189,6 @@ func (i IDType) String() string {
 	case EN__A:
 		return "A"
 
-	/**** Unions ****/
-
-	// none
-
 	/**** Anonymous Unions ****/
 
 	case AU__root_rp_page:
@@ -213,21 +198,49 @@ func (i IDType) String() string {
 
 	case AS__root_rp_page_struct1:
 		return "struct(root.rp.$page.1)"
+
+	/**** Arrays ****/
+
+	case AR__ID_A:
+		return "Array<ID<A>>"
+	case AR__A:
+		return "Array<A>"
+	case AR__C:
+		return "Array<C>"
+
+	/**** Optional Primitives ****/
+
+	case PTo__Bool:
+		return "?Bool"
+	case PTo__Uint32:
+		return "?Uint32"
+	case PTo__String:
+		return "?String"
+
+	/**** Optional Structs ****/
+
+	case STo__B:
+		return "?B"
+
+	/**** Optional Arrays ****/
+
+	case ARo__C:
+		return "?Array<C>"
+
 	}
 
 	return "<undefined>"
 }
 
-// IsComposite returns true if the identified type is a composite type
-func (i IDType) IsComposite() bool {
+// HasQueryableProperties returns true if the identified type has queryable
+// properties
+func (i IDType) HasQueryableProperties() bool {
 	switch i {
 	/**** Structs ****/
 
 	case ST__C:
 		return true
 	case ST__B:
-		return true
-	case STo__B:
 		return true
 
 	/**** Entities ****/
@@ -239,6 +252,24 @@ func (i IDType) IsComposite() bool {
 
 	case AS__root_rp_page_struct1:
 		return true
+
+	/**** Arrays ****/
+
+	case AR__A:
+		return true
+	case AR__C:
+		return true
+
+	/**** Optional Structs ****/
+
+	case STo__B:
+		return true
+
+	/**** Optional Arrays ****/
+
+	case ARo__C:
+		return true
+
 	}
 
 	return false
@@ -252,7 +283,13 @@ func (i IDType) IsPolymorphic() bool {
 	case TR__integer:
 		return true
 
-	/**** Primitives ****/
+	/**** Anonymous Unions ****/
+
+	case AU__root_rp_page:
+		return true
+
+	/**** Optional Primitives ****/
+
 	case PTo__Bool:
 		return true
 	case PTo__Uint32:
@@ -260,48 +297,23 @@ func (i IDType) IsPolymorphic() bool {
 	case PTo__String:
 		return true
 
-	/**** Arrays ****/
-
-	case ARo__C:
-		return true
-
-	/**** IDs ****/
-
-	// no polymorphic types
-
-	/**** Structs ****/
+	/**** Optional Structs ****/
 
 	case STo__B:
 		return true
 
-	/**** Enums ****/
+	/**** Optional Arrays ****/
 
-	// no polymorphic types
-
-	/**** Entities ****/
-
-	// no polymorphic types
-
-	/**** Unions ****/
-
-	// none
-
-	/**** Anonymous Unions ****/
-
-	case AU__root_rp_page:
+	case ARo__C:
 		return true
-
-		/**** Anonymous Structs ****/
-
-		// no polymorphic types
 	}
 
 	return false
 }
 
-// Assignable returns true if the given type is accepted
+// IsAssignable returns true if the given type is accepted
 // by the identified polymorphic type
-func (i IDType) Assignable(t IDType) bool {
+func (i IDType) IsAssignable(t IDType) bool {
 	switch i {
 	/**** Traits ****/
 
@@ -317,7 +329,18 @@ func (i IDType) Assignable(t IDType) bool {
 			return true
 		}
 
-	/**** Primitives ****/
+	/**** Anonymous Unions ****/
+
+	case AU__root_rp_page:
+		switch t {
+		case AR__ID_A:
+			return true
+		case AS__root_rp_page_struct1:
+			return true
+		}
+
+	/**** Optional Primitives ****/
+
 	case PTo__Bool:
 		switch t {
 		case PT__Bool:
@@ -340,21 +363,7 @@ func (i IDType) Assignable(t IDType) bool {
 			return true
 		}
 
-	/**** Arrays ****/
-
-	case ARo__C:
-		switch t {
-		case ST__C:
-			return true
-		case PT__nil:
-			return true
-		}
-
-	/**** IDs ****/
-
-	// no polymorphic types
-
-	/**** Structs ****/
+	/**** Optional Structs ****/
 
 	case STo__B:
 		switch t {
@@ -364,31 +373,15 @@ func (i IDType) Assignable(t IDType) bool {
 			return true
 		}
 
-	/**** Enums ****/
+	/**** Optional Arrays ****/
 
-	// no polymorphic types
-
-	/**** Entities ****/
-
-	// no polymorphic types
-
-	/**** Unions ****/
-
-	// none
-
-	/**** Anonymous Unions ****/
-
-	case AU__root_rp_page:
+	case ARo__C:
 		switch t {
-		case AR__ID_A:
+		case AR__C:
 			return true
-		case AS__root_rp_page_struct1:
+		case PT__nil:
 			return true
 		}
-
-		/**** Anonymous Structs ****/
-
-		// no polymorphic types
 	}
 
 	return false
@@ -412,7 +405,20 @@ func (i IDType) IsValueAssignable(v interface{}) bool {
 			return true
 		}
 
-	/**** Primitives ****/
+	/**** Anonymous Unions ****/
+
+	case AU__root_rp_page:
+		switch v.(type) {
+		case []T_ID_A:
+			// is of type Array<ID<A>>
+			return true
+		case A_2:
+			// is of type anonymous struct root.rp.$page:struct1
+			return true
+		}
+
+	/**** Optional Primitives ****/
+
 	case PTo__Bool:
 		switch v.(type) {
 		case T_Bool:
@@ -435,21 +441,7 @@ func (i IDType) IsValueAssignable(v interface{}) bool {
 			return true
 		}
 
-	/**** Arrays ****/
-
-	case ARo__C:
-		switch v.(type) {
-		case T_C:
-			return true
-		case nil:
-			return true
-		}
-
-	/**** IDs ****/
-
-	// no polymorphic types
-
-	/**** Structs ****/
+	/**** Optional Structs ****/
 
 	case STo__B:
 		switch v.(type) {
@@ -459,33 +451,15 @@ func (i IDType) IsValueAssignable(v interface{}) bool {
 			return true
 		}
 
-	/**** Enums ****/
+	/**** Optional Arrays ****/
 
-	// no polymorphic types
-
-	/**** Entities ****/
-
-	// no polymorphic types
-
-	/**** Unions ****/
-
-	// none
-
-	/**** Anonymous Unions ****/
-
-	case AU__root_rp_page:
+	case ARo__C:
 		switch v.(type) {
-		case []T_ID_A:
-			// is of type Array<ID<A>>
+		case T_C:
 			return true
-		case A_2:
-			// is of type anonymous struct root.rp.$page:struct1
+		case nil:
 			return true
 		}
-
-		/**** Anonymous Structs ****/
-
-		// no polymorphic types
 	}
 
 	return false

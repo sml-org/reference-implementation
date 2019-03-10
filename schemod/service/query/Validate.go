@@ -13,7 +13,7 @@ func ValidateAttribute(
 ) error {
 	attrTypeID := attrID.Type()
 
-	if !attrTypeID.IsComposite() {
+	if !attrTypeID.HasQueryableProperties() {
 		// Ensure no selections are made on attributes of non-composite type
 		if len(attrSelection.Props) > 0 {
 			return fmt.Errorf(
@@ -73,7 +73,7 @@ func ValidateProperty(
 
 		// Ensure the provided argument type is assignable
 		paramTypeID := argID.Type()
-		if !paramTypeID.Assignable(arg.Type) {
+		if !paramTypeID.IsAssignable(arg.Type) {
 			return fmt.Errorf(
 				"mismatching types: %s can't be used as a value for "+
 					"argument %s of type %s",
@@ -114,7 +114,7 @@ func ValidateProperty(
 		}
 	}
 
-	if !propParentTypeID.IsComposite() {
+	if !propParentTypeID.HasQueryableProperties() {
 		// Ensure no selections are made on properties of non-composite type
 		if len(selection.Props) > 0 {
 			return fmt.Errorf(
