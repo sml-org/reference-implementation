@@ -18,120 +18,144 @@ const (
 
 	// TR__integer = integer
 	// implementation: T_Integer
+	// categories:     polymorphic
 	TR__integer
 
 	/**** Primitives ****/
 
 	// PT__Version = Version
 	// implementation: T_Version
+	// categories:     scalar
 	PT__Version
 
 	// PT__Bool = Bool
 	// implementation: T_Bool
+	// categories:     scalar, instanciable
 	PT__Bool
 
 	// PT__Int32 = Int32
 	// implementation: T_Int32
+	// categories:     scalar, instanciable
 	PT__Int32
 
 	// PT__Uint32 = ?Uint32
 	// implementation: T_Uint32
+	// categories:     scalar, instanciable
 	PT__Uint32
 
 	// PT__Int64 = Int64
 	// implementation: T_Int64
+	// categories:     scalar, instanciable
 	PT__Int64
 
 	// PT__Uint64 = Uint64
 	// implementation: T_Uint64
+	// categories:     scalar, instanciable
 	PT__Uint64
 
 	// PT__String = String
 	// implementation: T_String
+	// categories:     scalar, instanciable
 	PT__String
 
 	// PT__Text = Text
 	// implementation: T_Text
+	// categories:     scalar, instanciable
 	PT__Text
 
 	/**** IDs ****/
 
 	// ID__A = ID<A>
 	// implementation: T_ID_A
+	// categories:     scalar
 	ID__A
 
 	/**** Structs ****/
 
 	// ST__C = struct C
 	// implementation: T_C
+	// categories:     composite, instanciable, queryable
 	ST__C
 
 	// ST__B = struct B
 	// implementation: T_B
+	// categories:     composite, instanciable, queryable
 	ST__B
 
 	/**** Enums ****/
 
 	// NU__E = enum E
 	// implementation: T_E
+	// categories:     scalar, instanciable
 	NU__E
 
 	/**** Entities ****/
 
 	// EN__A = entity A
 	// implementation: T_A
+	// categories:     composite, queryable
 	EN__A
 
 	/**** Anonymous Unions ****/
 
 	// AU__root_rp_page = anonymous union (root.rp.$page)
 	// implementation: A_1
+	// categories:     polymorphic
 	AU__root_rp_page
 
 	/**** Anonymous Structs ****/
 
 	// AS__root_rp_page_struct1 = anonymous struct (root.rp.$page):struct1
 	// implementation: A_2
+	// categories:     composite, instanciable, queryable
 	AS__root_rp_page_struct1
 
 	/**** Arrays ****/
 
 	// AR__ID_A = Array<ID<A>>
 	// implementation: []T_ID_A
+	// categories:     instantiable
 	AR__ID_A
 
 	// AR__A = Array<A>
 	// implementation: []T_A
+	// categories:     instantiable, queryable
 	AR__A
 
 	// AR__C = Array<C>
 	// implementation: []T_C
+	// categories:     instantiable, queryable
 	AR__C
 
 	/**** Optional Primitives ****/
 
 	// PTo__Bool = ?Bool
 	// implementation: *T_Bool
+	// categories:     polymorphic
 	PTo__Bool
 
 	// PTo__Uint32 = ?Uint32
 	// implementation: *T_Uint32
+	// categories:     polymorphic
 	PTo__Uint32
 
 	// PTo__String = ?String
 	// implementation: *T_String
+	// categories:     polymorphic
 	PTo__String
 
 	/**** Optional Structs ****/
 
 	// STo__B = ?struct B
 	// implementation: *T_B
+	// categories:     polymorphic, queryable
 	STo__B
 
 	/**** Optional Arrays ****/
 
 	// ARo__C = ?Array<C>
 	// implementation: []T_C (nullable)
+	// categories:     polymorphic, queryable
 	ARo__C
 )
 
