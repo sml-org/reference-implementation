@@ -73,23 +73,23 @@ func ValidateProperty(
 
 		// Ensure the provided argument type is assignable
 		paramTypeID := argID.Type()
-		if !paramTypeID.IsAssignable(arg.Type) {
+		if !paramTypeID.IsAssignable(arg.Type()) {
 			return fmt.Errorf(
 				"mismatching types: %s can't be used as a value for "+
 					"argument %s of type %s",
-				arg.Type.String(),
+				arg.Type().String(),
 				argID.String(),
 				paramTypeID.String(),
 			)
 		}
 
 		// Validate argument value
-		if !paramTypeID.IsValueAssignable(arg.Value) {
+		if !paramTypeID.IsValueAssignable(arg) {
 			return fmt.Errorf(
 				"mismatching types: can't assign value of Go type %s "+
 					"to argument of type %s",
-				reflect.TypeOf(arg.Value).String(),
-				arg.Type.String(),
+				reflect.TypeOf(arg).String(),
+				arg.Type().String(),
 			)
 		}
 	}

@@ -1,40 +1,59 @@
 package typesystem
 
 import (
-	"unicode/utf8"
+	"encoding/binary"
+	"encoding/json"
+	"io"
 )
 
 // T_Text implements the type: Text
 type T_Text struct {
-	v []rune
+	Length uint32
+	Value  []byte
 }
 
-// ID returns the type identifier
-func (o T_Text) ID() IDType {
+// Type returns the type identifier
+func (o T_Text) Type() IDType {
 	return PT__Text
 }
 
-// NewText constructs a new instance of type Text
-func NewText(s []byte) T_Text {
-	return T_Text{}
+// Len returns the size of the value in bytes
+func (o T_Text) Len() uint64 {
+	return uint64(len(o.Value))
 }
 
-func (txt T_Text) Decode(b []byte) error {
-	return nil
+// Serialize serializes the value to the given byte stream
+func (o T_Text) Serialize(
+	byteOrder binary.ByteOrder,
+	stream io.Writer,
+) error {
+	_, err := stream.Write(o.Value)
+	return err
 }
 
-func (txt T_Text) Encode() []byte {
-	size := 0
-	for _, r := range txt.v {
-		size += utf8.RuneLen(r)
-	}
+// SerializeJSON implements the Serializable interface
+func (o T_Text) SerializeJSON() ([]byte, error) {
+	return json.Marshal(o.Value)
+}
 
-	bs := make([]byte, size)
+// DeserializeJSON implements the Serializable interface
+func (o *T_Text) DeserializeJSON(b []byte) error {
+	return json.Unmarshal(b, &o.Value)
+}
 
-	count := 0
-	for _, r := range txt.v {
-		count += utf8.EncodeRune(bs[count:], r)
-	}
+// MarshalJSON implements the encoding/json.Marshaler interface
+func (o T_Text) MarshalJSON() ([]byte, error) {
+	return o.SerializeJSON()
+}
 
-	return bs
+// UnmarshalJSON implements the encoding/json.Unmarshaler interface
+func (o *T_Text) UnmarshalJSON(b []byte) error {
+	return o.DeserializeJSON(b)
+}
+
+// NewT_Text constructs a new instance of type Text
+func NewT_Text(s []byte) T_Text {
+	v := make([]byte, len(s))
+	copy(v, s)
+	return T_Text{Value: v}
 }

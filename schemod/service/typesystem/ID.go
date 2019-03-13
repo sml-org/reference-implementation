@@ -1,9 +1,11 @@
 package typesystem
 
 import (
+	"encoding/binary"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"io"
 	"regexp"
 
 	"github.com/pkg/errors"
@@ -59,4 +61,13 @@ func (id ID) UnmarshalJSON(bytes []byte) (err error) {
 		)
 	}
 	return id.FromString(string(bytes[1:33]))
+}
+
+// Serialize serializes the value to the given byte stream
+func (o ID) Serialize(
+	byteOrder binary.ByteOrder,
+	stream io.Writer,
+) error {
+	_, err := stream.Write(o.v[:])
+	return err
 }

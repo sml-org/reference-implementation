@@ -1,18 +1,48 @@
 package typesystem
 
-// T_ID_A implements the type: ID<A>
-type T_ID_A struct {
-	v ID
-}
+import (
+	"encoding/binary"
+	"encoding/json"
+	"io"
+)
 
-// ID returns the type identifier
-func (o T_ID_A) ID() IDType {
+// T_ID_A implements the type: ID<A>
+type T_ID_A ID
+
+// Type returns the type identifier
+func (o T_ID_A) Type() IDType {
 	return ID__A
 }
 
-// NewT_ID_A creates a new instance of ID<A>
-func NewT_ID_A(v ID) T_ID_A {
-	return T_ID_A{
-		v: v,
-	}
+// Len returns the size of the value in bytes
+func (o T_ID_A) Len() uint64 {
+	return 16
+}
+
+// Serialize serializes the value to the given byte stream
+func (o T_ID_A) Serialize(
+	byteOrder binary.ByteOrder,
+	stream io.Writer,
+) error {
+	return o.Serialize(byteOrder, stream)
+}
+
+// SerializeJSON implements the Serializable interface
+func (o T_ID_A) SerializeJSON() ([]byte, error) {
+	return json.Marshal(ID(o))
+}
+
+// DeserializeJSON implements the Serializable interface
+func (o *T_ID_A) DeserializeJSON(b []byte) error {
+	return json.Unmarshal(b, (*ID)(o))
+}
+
+// MarshalJSON implements the encoding/json.Marshaler interface
+func (o T_ID_A) MarshalJSON() ([]byte, error) {
+	return o.SerializeJSON()
+}
+
+// UnmarshalJSON implements the encoding/json.Unmarshaler interface
+func (o *T_ID_A) UnmarshalJSON(b []byte) error {
+	return o.DeserializeJSON(b)
 }

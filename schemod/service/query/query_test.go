@@ -4,7 +4,9 @@ import (
 	"reference-implementation/schemod/service/query"
 	"reference-implementation/schemod/service/typesystem"
 	"reference-implementation/schemod/service/typesystem/anonstruct"
+	"reference-implementation/schemod/service/typesystem/array"
 	"reference-implementation/schemod/service/typesystem/id"
+	"reference-implementation/schemod/service/typesystem/prim"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -16,9 +18,8 @@ func TestQueryValidation(t *testing.T) {
 		Props: query.Props{
 			typesystem.PR__root_rp: query.PropertySelection{
 				Args: query.Args{
-					typesystem.PM__root_rp_page: query.Argument{
-						Type: typesystem.AR__ID_A,
-						Value: []typesystem.T_ID_A{
+					typesystem.PM__root_rp_page: &array.ID_A{
+						Items: []id.A{
 							id.A{},
 						},
 					},
@@ -35,10 +36,9 @@ func TestWrongArgument(t *testing.T) {
 		Props: query.Props{
 			typesystem.PR__root_rp: query.PropertySelection{
 				Args: query.Args{
-					typesystem.PM__B_bo_o1: query.Argument{
-						Type: typesystem.AR__ID_A,
-						Value: []id.A{
-							typesystem.NewT_ID_A(typesystem.NewID()),
+					typesystem.PM__B_bo_o1: &array.ID_A{
+						Items: []id.A{
+							id.A(typesystem.NewID()),
 						},
 					},
 				},
@@ -55,10 +55,7 @@ func TestPolymorphicParameterWrongType(t *testing.T) {
 		Props: query.Props{
 			typesystem.PR__root_rp: query.PropertySelection{
 				Args: query.Args{
-					typesystem.PM__root_rp_page: query.Argument{
-						Type:  typesystem.PT__Bool,
-						Value: typesystem.NewT_Bool(true),
-					},
+					typesystem.PM__root_rp_page: &prim.Bool{Value: true},
 				},
 			},
 		},
@@ -69,21 +66,18 @@ func TestPolymorphicParameterWrongType(t *testing.T) {
 // TestPolymorphicParameter tests parameters of polymorphic type to accept
 // assignable types
 func TestPolymorphicParameter(t *testing.T) {
-	assignableTypes := map[typesystem.IDType]interface{}{
-		typesystem.AS__root_rp_page_struct1: anonstruct.A2{},
-		typesystem.AR__ID_A: []id.A{
-			typesystem.NewT_ID_A(typesystem.NewID()),
-		},
+	assignableTypes := []typesystem.Serializable{
+		&anonstruct.A2{},
+		&array.ID_A{Items: []id.A{
+			id.A(typesystem.NewID()),
+		}},
 	}
-	for tp, val := range assignableTypes {
+	for _, val := range assignableTypes {
 		q := query.Query{
 			Props: query.Props{
 				typesystem.PR__root_rp: query.PropertySelection{
 					Args: query.Args{
-						typesystem.PM__root_rp_page: query.Argument{
-							Type:  tp,
-							Value: val,
-						},
+						typesystem.PM__root_rp_page: val,
 					},
 				},
 			},
@@ -99,10 +93,7 @@ func TestParameterMismatchingType(t *testing.T) {
 		Props: query.Props{
 			typesystem.PR__root_rp: query.PropertySelection{
 				Args: query.Args{
-					typesystem.PM__root_rp_page: query.Argument{
-						Type:  typesystem.AR__ID_A,
-						Value: typesystem.NewT_Bool(true),
-					},
+					typesystem.PM__root_rp_page: &prim.Bool{Value: true},
 				},
 			},
 		},

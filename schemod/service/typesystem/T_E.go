@@ -1,5 +1,11 @@
 package typesystem
 
+import (
+	"encoding/binary"
+	"encoding/json"
+	"io"
+)
+
 // T_E represents the value type of enum E
 type T_E uint32
 
@@ -34,7 +40,43 @@ func (o T_E) String() string {
 	return ""
 }
 
-// ID returns the type identifier
-func (o T_E) ID() IDType {
+// Type returns the type identifier
+func (o T_E) Type() IDType {
 	return NU__E
+}
+
+// Len returns the size of the value in bytes
+func (o T_E) Len() uint64 {
+	return 4
+}
+
+// Serialize serializes the value to the given byte stream
+func (o T_E) Serialize(
+	byteOrder binary.ByteOrder,
+	stream io.Writer,
+) error {
+	buf := make([]byte, 4)
+	byteOrder.PutUint32(buf, uint32(o))
+	_, err := stream.Write(buf)
+	return err
+}
+
+// SerializeJSON implements the Serializable interface
+func (o T_E) SerializeJSON() ([]byte, error) {
+	return json.Marshal(uint32(o))
+}
+
+// DeserializeJSON implements the Serializable interface
+func (o *T_E) DeserializeJSON(b []byte) error {
+	return json.Unmarshal(b, o)
+}
+
+// MarshalJSON serializes the value to a JSON token
+func (o T_E) MarshalJSON() ([]byte, error) {
+	return o.SerializeJSON()
+}
+
+// UnmarshalJSON implements the encoding/json.Unmarshaler interface
+func (o *T_E) UnmarshalJSON(b []byte) error {
+	return o.DeserializeJSON(b)
 }
